@@ -1,0 +1,71 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</head>
+<body>-->
+<% layout('./layout/page')%>
+<% block('title', '')%>
+<!--<div class="container-fluid">
+    <form>
+        <h2>Sign in</h2>
+        <div>
+            <input  id="user" type="text" placeholder="User name...">
+            <input  id="text" type="text" placeholder="Password...">
+        </div>
+        <div>
+            <button class="btn-warning" id="btn">Enter</button>
+        </div>
+    </form>
+</div>-->
+<form style="width: 400px; border: 1px solid; padding: 10px; position: absolute; top: 100px; left: 40%">
+    <div class="form-group">
+        <h2>Sing in</h2>
+        <label for="exampleInputEmail1">User name</label>
+        <input type="text" class="form-control" id="username"  placeholder="Enter your name...">
+        <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+    </div>
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password...">
+    </div>
+    <!--<div class="form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>-->
+    <button id="btn" type="submit" class="btn btn-primary">Sing in</button>
+    <br>
+    <div class="form-group">
+        <p>If you have not an account, visit <a href="/register">Registration page</a></p>
+    </div>
+</form>
+<script>
+    $('#btn').on('click', function () {
+        let username = $('#username').val();
+        let password = $('#password').val();
+        $('#password').val('');
+        let arr = [];
+        arr.push(username);
+        arr.push(password)
+        console.log('user - ', username);
+        console.log('text - ', password);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/login",
+            data: JSON.stringify([{username:username}, {password:password}])
+        }).done(function (msg) {
+            alert(msg)
+            if (msg ==='ok'){
+                window.location.href='/chat'
+                alert(msg);
+            }
+
+        })
+    });
+</script>
+<!--</body>
+</html>-->

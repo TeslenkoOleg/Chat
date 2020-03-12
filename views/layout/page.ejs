@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%=blocks.title%></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/vendor/bower_components/bootstrap/dist/css/bootstrap.min.css" >
+    <script src="/vendor/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/vendor/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  -->  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+<header>
+    <%-blocks.header%>
+</header>
+<section class="container">
+    <%-partial('../partials/top-nav')%>
+    <h1><%=blocks.title %></h1>
+
+    <%-body%>
+</section>
+</div>
+<script>
+function check(user) {
+    if (!user){
+        window.location.href='/login'
+    }
+}
+check(user)
+
+    function logout(){
+        console.log('logout')
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/logout",
+        }).done(function (msg) {
+            window.location.href='/'
+            alert(msg);
+        })
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<% layout('./layout/page')%>
+<% block('title', 'Wellcome')%>
+<% if (user) { %>
+<h2>Hello, <%=user.get('username')%></h2>
+<% } %>
+
+
+<div id="room">
+    <form>
+        <label>Text</label>
+        <input class="form-control" id="text" type="text" placeholder="Text...">
+        <button id="btn_2">Send</button>
+    </form>
+</div>
+
+<div>
+    <div id="chatWindow" class="container" style="border: 1px solid; padding: 5px; height: 400px">
+        <ul></ul>
+
+
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    let socket = io.connect('',  {
+        reconnect: false
+    });
+    let input = $('#room input');
+    let form = $('#room form');
+    let ul = $('#chatWindow ul');
+    form.submit(function () {
+        console.log('111')
+
+        let text = input.val();
+        input.val('');
+        /*socket.emit('message', text, function (data) {
+            $('<li>',"I'm> "+ text).appendTo(ul)
+        });*/
+        socket.emit('message', text, function (data) {
+            printMessage("I'm> "+ text)
+        });
+        return false
+
+    });
+
+    socket.on('message', function (username, text) {
+        console.log('1')
+        //$('<li>'.append($('<mark>').text(username), $('<b>').text(text)).appendTo(ul));
+        printMessage(`${username} > ${text}`)
+    })
+    .on('leave', function (username) {
+        printMessage(username + ' leaved chat!')
+    })
+    .on('join', function (username) {
+        console.log('user---')
+        printMessage(username + " connected to a chat." )
+    })
+    /*.on('connect', function () {
+        printStatus('Connection is successful.')
+        form.on('submit', sendMessage)
+        input.prop(disabled, false)
+    })
+    .on('disconnect', function () {
+        printStatus('Connection is felt.')
+        form.off('submit', sendMessage)
+        input.prop(disabled, true)
+    })*/
+
+
+
+function printStatus(status) {
+    console.log('printM')
+        $('<li>'.append($('<i>').text(status).appendTo(ul)));
+}
+function printMessage(text) {
+    console.log('printM')
+        $('<li>').text(text).appendTo(ul);
+
+}
+function sendMessage() {
+        console.log('sendM')
+    let text = input.val();
+    socket.emit('message', text, function (data) {
+        printMessage("I'm> "+ text)
+    });
+    input.val('');
+    return false
+
+}
+    /*$('#btn_2').on('click', function () {
+        console.log('click');
+        let text = $('#text').val();
+        $('#text').val('');
+        console.log(text);
+            $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/chat",
+            data: JSON.stringify({text: text})
+            }).done(function (msg) {
+
+            console.log(typeof msg);
+            console.log(msg);
+            $('#chatWindow').html(msg)
+        })
+
+    });*/
+
+
+
+</script>
+
+
